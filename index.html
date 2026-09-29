@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Record Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            min-height: 100vh;
+            padding: 30px 15px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #312e81;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            color: #312e81;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #4f46e5;
+        }
+
+        .button-group {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .add-btn:hover {
+            background: #3730a3;
+        }
+
+        .export-btn {
+            background: #059669;
+            color: white;
+        }
+
+        .export-btn:hover {
+            background: #047857;
+        }
+
+        .import-btn {
+            background: #0284c7;
+            color: white;
+        }
+
+        .import-btn:hover {
+            background: #0369a1;
+        }
+
+        .clear-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+        #message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #eef2ff;
+            color: #312e81;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            padding: 7px 12px;
+            font-size: 13px;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        .empty {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            color: #64748b;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            th,
+            td {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>🎓 Student Record Manager</h1>
+        <p>Module 2 Assignment</p>
+    </header>
+
+    <!-- Student Form -->
+    <div class="card">
+
+        <h2>Add Student</h2>
+
+        <form id="studentForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="studentName">Student Name</label>
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter student name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="Enter student ID"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                        type="text"
+                        id="email"
+                        placeholder="example@gmail.com"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Course</label>
+                    <input
+                        type="text"
+                        id="course"
+                        placeholder="Enter course"
+                    >
+                </div>
+
+            </div>
+
+            <div class="button-group">
+
+                <button type="submit" class="add-btn">
+                    Add Student
+                </button>
+
+                <button
+                    type="button"
+                    class="clear-btn"
+                    onclick="clearForm()">
+                    Clear
+                </button>
+
+            </div>
+
+            <div id="message"></div>
+
+        </form>
+
+    </div>
+
+
+    <!-- File Operations -->
+    <div class="card">
+
+        <h2>Student Data</h2>
+
+        <div class="button-group">
+
+            <button
+                type="button"
+                class="export-btn"
+                onclick="exportData()">
+                💾 Save Data to File
+            </button>
+
+            <button
+                type="button"
+                class="import-btn"
+                onclick="document.getElementById('fileInput').click()">
+                📂 Read Student Data
+            </button>
+
+            <input
+                type="file"
+                id="fileInput"
+                class="file-input"
+                accept=".json"
+                onchange="importData(event)"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Records -->
+    <div class="card">
+
+        <h2>Student Records</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Student Name</th>
+                        <th>Student ID</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+        <div id="emptyMessage" class="empty">
+            No student records available.
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        <p>Student Record Manager | Module 2 Assignment</p>
+    </div>
+
+</div>
+
+
+<script>
+
+    // Student records array
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+
+
+    // Email Regex
+    const emailRegex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+
+    // Form submit event
+    document
+        .getElementById("studentForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            try {
+
+                // Get input values
+                const name =
+                    document.getElementById("studentName")
+                    .value.trim();
+
+                const studentId =
+                    document.getElementById("studentId")
+                    .value.trim();
+
+                const email =
+                    document.getElementById("email")
+                    .value.trim();
+
+                const course =
+                    document.getElementById("course")
+                    .value.trim();
+
+
+                // Validate empty fields
+                if (!name || !studentId || !email || !course) {
+                    throw new Error(
+                        "All fields are required."
+                    );
+                }
+
+
+                // Validate name
+                if (name.length < 2) {
+                    throw new Error(
+                        "Student name must contain at least 2 characters."
+                    );
+                }
+
+
+                // Validate Email using Regex
+                if (!emailRegex.test(email)) {
+                    throw new Error(
+                        "Please enter a valid email address."
+                    );
+                }
+
+
+                // Check duplicate student ID
+                const duplicate =
+                    students.some(
+                        student => student.studentId === studentId
+                    );
+
+                if (duplicate) {
+                    throw new Error(
+                        "Student ID already exists."
+                    );
+                }
+
+
+                // Create student object
+                const student = {
+                    name: name,
+                    studentId: studentId,
+                    email: email,
+                    course: course
+                };
+
+
+                // Add student
+                students.push(student);
+
+
+                // Save to Local Storage
+                localStorage.setItem(
+                    "students",
+                    JSON.stringify(students)
+                );
+
+
+                // Display success message
+                showMessage(
+                    "Student added successfully!",
+                    "success"
+                );
+
+
+                // Clear form
+                clearForm();
+
+
+                // Display records
+                displayStudents();
+
+            }
+
+            catch (error) {
+
+                // Exception handling
+                showMessage(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        });
+
+
+    // Display students
+    function displayStudents() {
+
+        const tableBody =
+            document.getElementById("studentTableBody");
+
+        const emptyMessage =
+            document.getElementById("emptyMessage");
+
+
+        tableBody.innerHTML = "";
+
+
+        if (students.length === 0) {
+
+            emptyMessage.style.display = "block";
+
+            return;
+
+        }
+
+
+        emptyMessage.style.display = "none";
+
+
+        students.forEach(function(student, index) {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+                <td>${index + 1}</td>
+
+                <td>${escapeHTML(student.name)}</td>
+
+                <td>${escapeHTML(student.studentId)}</td>
+
+                <td>${escapeHTML(student.email)}</td>
+
+                <td>${escapeHTML(student.course)}</td>
+
+                <td>
+                    <button
+                        class="delete-btn"
+                        onclick="deleteStudent(${index})">
+                        Delete
+                    </button>
+                </td>
+
+            `;
+
+
+            tableBody.appendChild(row);
+
+        });
+
+    }
+
+
+    // Delete student
+    function deleteStudent(index) {
+
+        try {
+
+            if (
+                index < 0 ||
+                index >= students.length
+            ) {
+                throw new Error(
+                    "Invalid student record."
+                );
+            }
+
+
+            students.splice(index, 1);
+
+
+            localStorage.setItem(
+                "students",
+                JSON.stringify(students)
+            );
+
+
+            displayStudents();
+
+
+            showMessage(
+                "Student record deleted.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // Save data to JSON file
+    function exportData() {
+
+        try {
+
+            if (students.length === 0) {
+
+                throw new Error(
+                    "There are no student records to save."
+                );
+
+            }
+
+
+            const data =
+                JSON.stringify(students, null, 4);
+
+
+            const blob =
+                new Blob(
+                    [data],
+                    { type: "application/json" }
+                );
+
+
+            const url =
+                URL.createObjectURL(blob);
+
+
+            const link =
+                document.createElement("a");
+
+
+            link.href = url;
+
+            link.download =
+                "student_records.json";
+
+
+            link.click();
+
+
+            URL.revokeObjectURL(url);
+
+
+            showMessage(
+                "Student data saved successfully!",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // Read data from JSON file
+    function importData(event) {
+
+        try {
+
+            const file =
+                event.target.files[0];
+
+
+            if (!file) {
+
+                throw new Error(
+                    "No file selected."
+                );
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = function(e) {
+
+                try {
+
+                    const importedData =
+                        JSON.parse(e.target.result);
+
+
+                    if (!Array.isArray(importedData)) {
+
+                        throw new Error(
+                            "Invalid JSON file format."
+                        );
+
+                    }
+
+
+                    // Validate imported records
+                    importedData.forEach(function(student) {
+
+                        if (
+                            !student.name ||
+                            !student.studentId ||
+                            !student.email ||
+                            !student.course
+                        ) {
+
+                            throw new Error(
+                                "Invalid student data in file."
+                            );
+
+                        }
+
+
+                        if (
+                            !emailRegex.test(student.email)
+                        ) {
+
+                            throw new Error(
+                                "Invalid email found in file."
+                            );
+
+                        }
+
+                    });
+
+
+                    students = importedData;
+
+
+                    localStorage.setItem(
+                        "students",
+                        JSON.stringify(students)
+                    );
+
+
+                    displayStudents();
+
+
+                    showMessage(
+                        "Student data loaded successfully!",
+                        "success"
+                    );
+
+                }
+
+                catch (error) {
+
+                    showMessage(
+                        error.message,
+                        "error"
+                    );
+
+                }
+
+            };
+
+
+            reader.readAsText(file);
+
+        }
+
+        catch (error) {
+
+            showMessage(
+                error.message,
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // Clear form
+    function clearForm() {
+
+        document
+            .getElementById("studentForm")
+            .reset();
+
+    }
+
+
+    // Display message
+    function showMessage(message, type) {
+
+        const messageBox =
+            document.getElementById("message");
+
+
+        messageBox.textContent =
+            message;
+
+
+        messageBox.className = type;
+
+
+        messageBox.style.display =
+            "block";
+
+
+        setTimeout(function() {
+
+            messageBox.style.display =
+                "none";
+
+        }, 3000);
+
+    }
+
+
+    // Prevent HTML injection
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // Load existing records when page opens
+    displayStudents();
+
+</script>
+
+</body>
+              </html>
